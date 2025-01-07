@@ -10,7 +10,6 @@ interface CustomRequest extends Request {
 
 
 export const validateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
-    console.log(req)
     const token: string | undefined = req.header('Authorization')?.split(' ')[1]
 
     if (!token) {

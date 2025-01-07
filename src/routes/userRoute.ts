@@ -101,12 +101,20 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
     }*/
     console.log("jauu")
     try {
+        const token: string | undefined = req.header('Authorization')?.split(' ')[1]
+        if (!token) {
+            res.status(401).json({ message: "Access denied" });
+            return 
+        }
 
-        
+        const decoded = jwt.verify(token, process.env.SECRET as string) as jwt.JwtPayload;
+        const username = decoded.username;
+
         const topic: ITopic = new Topic({
             title: req.body.title,
             content: req.body.content,
-            username: req.body.username
+            username: username,
+            date: new Date()
         });
         await topic.save();
         res.status(201).send("Topic created");
