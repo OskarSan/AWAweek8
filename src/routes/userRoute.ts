@@ -65,7 +65,8 @@ router.post("/api/user/login",
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({user});
+        res.status(200).json({token});
+        return;
     } catch (error: any) {
         res.status(500).send("Error: " + error);
     }
