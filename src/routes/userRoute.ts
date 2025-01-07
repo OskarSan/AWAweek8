@@ -3,7 +3,8 @@ import { body, Result, ValidationError, validationResult } from 'express-validat
 import bcrypt from 'bcrypt'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { User, IUser } from '../models/User'
-import { validateToken } from '../middleware/validateToken'
+import { Topic, ITopic } from '../models/Topic'
+import { validateToken, validateAdmin } from '../middleware/validateToken'
 import { loginValidation, registerValidation } from '../validators/inputValidation'
 
 
@@ -68,14 +69,14 @@ router.post("/api/user/login",
             res.status(401).send("Invalid password");
             return;
         }
+        const jwtPayload: JwtPayload = {
+            id: user._id,
+            username: user.username
+        }
+        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: "2m"})
 
-        const token: string = jwt.sign(
-            { _id: user._id, username: user.username, isAdmin: user.isAdmin },
-            process.env.SECRET as string,
-            { expiresIn: '1h' }
-        );
 
-        res.status(200).json({token});
+        res.status(200).json({success: true, token});
         return;
     } catch (error: any) {
         res.status(500).send("Error: " + error);
@@ -84,8 +85,54 @@ router.post("/api/user/login",
 
 
 
-router.get("/api/user/profile", validateToken, async (req: Request, res: Response) => {
-    res.send(req.body);
+router.get("/api/topics",  async (req: Request, res: Response) => {
+    
+    res.send(await Topic.find());
+    
+});
+
+router.post("/api/topic", validateToken, async (req: Request, res: Response) => {
+    /*
+    const errors: Result<ValidationError> = validationResult(req);
+    
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+    }*/
+    console.log("jauu")
+    try {
+
+        
+        const topic: ITopic = new Topic({
+            title: req.body.title,
+            content: req.body.content,
+            username: req.body.username
+        });
+        await topic.save();
+        res.status(201).send("Topic created");
+    } catch (error: any) {
+        res.status(500).send("Error: " + error);
+    }
+    
+    
+});
+
+router.delete("/api/topics/:id", validateAdmin, async (req: Request, res: Response) => {
+
+    const errors: Result<ValidationError> = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+    }
+    try {
+        await Topic.findByIdAndDelete(req.params.id);
+        res.status(200).send("Topic deleted succesfully");
+    }catch (error: any) {
+        res.status(500).send("Error: " + error)
+
+    }
+
+
 });
 
 

@@ -10,6 +10,7 @@ interface CustomRequest extends Request {
 
 
 export const validateToken = (req: CustomRequest, res: Response, next: NextFunction) => {
+    console.log(req)
     const token: string | undefined = req.header('Authorization')?.split(' ')[1]
 
     if (!token) {
@@ -24,6 +25,15 @@ export const validateToken = (req: CustomRequest, res: Response, next: NextFunct
 
     } catch (error) {
         console.error(`Error during token validation: ${error}`);
-        res.status(401).json({ message: "Invalid token" });
+        res.status(401).json({ message: "Token not found" });
     }
+}
+
+
+export const validateAdmin = (req: CustomRequest, res: Response, next: NextFunction) => {
+    if (!req.user?.isAdmin) {
+        res.status(403).json({ message: "Access denied" });
+        return
+    }
+    next();
 }
