@@ -107,6 +107,7 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
             return 
         }
 
+        //dumb
         const decoded = jwt.verify(token, process.env.SECRET as string) as jwt.JwtPayload;
         const username = decoded.username;
 
@@ -117,7 +118,7 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
             date: new Date()
         });
         await topic.save();
-        res.status(201).send("Topic created");
+        res.status(200).send("Topic created");
     } catch (error: any) {
         res.status(500).send("Error: " + error);
     }
