@@ -61,7 +61,7 @@ router.post("/api/user/login",
 
         const token: string = jwt.sign(
             { _id: user._id, username: user.username, isAdmin: user.isAdmin },
-            process.env.JWT_SECRET as string,
+            process.env.SECRET as string,
             { expiresIn: '1h' }
         );
 
