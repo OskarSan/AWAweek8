@@ -4,12 +4,13 @@ import bcrypt from 'bcrypt'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import { User, IUser } from '../models/User'
 import { validateToken } from '../middleware/validateToken'
+import { loginValidation, registerValidation } from '../validators/inputValidation'
 
 
 const router : Router = Router();
 
 
-router.post("/api/user/register", async (req: Request, res: Response) => {
+router.post("/api/user/register", registerValidation,async (req: Request, res: Response) => {
 
     try {
 
@@ -43,6 +44,7 @@ router.post("/api/user/register", async (req: Request, res: Response) => {
 router.post("/api/user/login",
     body("username").trim().escape(),
     body("password").escape(),
+    loginValidation,
     async (req: Request, res: Response) => {
     
 
