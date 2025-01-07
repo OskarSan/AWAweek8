@@ -11,7 +11,11 @@ const router : Router = Router();
 
 
 router.post("/api/user/register", registerValidation,async (req: Request, res: Response) => {
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+    }
     try {
 
         const user: IUser = new User({
@@ -47,7 +51,11 @@ router.post("/api/user/login",
     loginValidation,
     async (req: Request, res: Response) => {
     
-
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+    }    
     try {
         const user: IUser | null = await User.findOne({ email: req.body.email });
         if (!user) {
