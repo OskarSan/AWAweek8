@@ -127,7 +127,7 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
     
 });
 
-router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Response) => {
+router.delete("/api/topic/:id", validateToken, validateAdmin, async (req: Request, res: Response) => {
 
     /*const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
