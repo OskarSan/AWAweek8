@@ -71,9 +71,10 @@ router.post("/api/user/login",
         }
         const jwtPayload: JwtPayload = {
             id: user._id,
-            username: user.username
+            username: user.username,
+            isAdmin: user.isAdmin
         }
-        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: "2m"})
+        const token: string = jwt.sign(jwtPayload, process.env.SECRET as string, { expiresIn: "2h"})
 
 
         res.status(200).json({success: true, token});
@@ -118,7 +119,7 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
             date: new Date()
         });
         await topic.save();
-        res.status(200).send("Topic created");
+        res.status(200).send({topic});
     } catch (error: any) {
         res.status(500).send("Error: " + error);
     }
@@ -126,7 +127,7 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
     
 });
 
-router.delete("/api/topics/:id", validateAdmin, async (req: Request, res: Response) => {
+router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Response) => {
 
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
