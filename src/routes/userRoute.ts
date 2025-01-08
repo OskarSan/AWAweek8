@@ -136,7 +136,9 @@ router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Respons
     }
     try {
         await Topic.findByIdAndDelete(req.params.id);
-        res.status(200).send("Topic deleted succesfully");
+
+        res.status(200).send("Topic deleted successfully.");
+        return;
     }catch (error: any) {
         res.status(500).send("Error: " + error)
 

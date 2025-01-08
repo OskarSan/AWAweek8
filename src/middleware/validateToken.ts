@@ -44,7 +44,7 @@ export const validateAdmin = (req: CustomRequest, res: Response, next: NextFunct
     const decoded:JwtPayload = jwt.verify(token, process.env.SECRET as string) as JwtPayload;
     console.log(decoded)
     if (!decoded.isAdmin) {
-        res.status(403).json({ message: "Access denied, not admin" });
+        res.status(403).json({ message: "Access denied." });
         return
     }
     next();
