@@ -127,23 +127,29 @@ router.post("/api/topic", validateToken, async (req: Request, res: Response) => 
     
 });
 
-router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Response) => {
+router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Response): Promise<any>  => {
 
 
     try {
         console.log(req.params)
         const deletedTopic = await Topic.findByIdAndDelete(req.params.id);
         if (!deletedTopic) {
-            res.status(404).send("Topic not found.");
+            return res.status(404).send("Topic not found.");
+            
         }
 
-        res.status(200).send("Topic deleted successfully.");
+        return res.status(200).send("Topic deleted successfully.");
     }catch (error: any) {
-        res.status(500).send("Error: " + error)
+        return res.status(500).send("Error: " + error)
 
     }
 
     
+});
+
+
+router.put("/adada",async (req: Request, res: Response) : Promise<any> => {
+    return res.send("put");
 });
 
 
