@@ -132,7 +132,8 @@ router.delete("/api/topic/:id", validateAdmin, async (req: Request, res: Respons
 
     try {
         console.log(req.params.id)
-        if (!Topic.deleteOne({_id: req.params.id})){
+        const deletedTopic = await Topic.findByIdAndDelete(req.params.id);
+        if (!deletedTopic) {
             return res.status(404).send("Topic not found.");
         }
 
