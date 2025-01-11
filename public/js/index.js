@@ -23,7 +23,7 @@ const fetchTopics = async () => {
                 const topicElement = document.createElement('div');
                 topicElement.classList.add('topic');
                 topicElement.innerHTML = `
-                    <h3>${topic.title}</h3>
+                    <span>${topic.title}</span>
                     <p>${topic.content}</p>
                     <p><strong>Posted by:</strong> ${topic.username}</p>
                     <p><strong>Created at:</strong> ${new Date(topic.createdAt).toLocaleString()}</p>
