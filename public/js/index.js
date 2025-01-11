@@ -159,7 +159,7 @@ loginForm.addEventListener('submit', async (e) => {
             const result = await response.json();
             localStorage.setItem('token', result.token);
             console.log(token, "tokeni :)")
-            window.location.reload();
+            window.location.href = '/'
         }else{
             const error = await response.json();
             console.log(error);
