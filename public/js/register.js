@@ -27,6 +27,7 @@ registerForm.addEventListener('submit', async (e) => {
         if (response.ok){
             const result = await response.json();
             console.log(result);
+            window.location = "index.html";
         }else{
             const error = await response.json();
             console.log(error); 
@@ -34,5 +35,7 @@ registerForm.addEventListener('submit', async (e) => {
     }catch(err){
         console.log(err);
     }
+
+
 
 });
